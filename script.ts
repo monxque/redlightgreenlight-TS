@@ -1,15 +1,15 @@
-let timer = false;
-let botTimer = false;
-const MAX = 6000;  //max 1 min
-const HEADSTEP = 10;
-const BOTSTEP = 100;
-let current = 0;    //overall time spent in this game
-let timeStep = 0;   //time spent in that round (girl head turns 360 degree as 1 round)
-let playerState = true;
-let started = false;
-let noOfTurns = 0;
-let botRounds = [];
-let deadImg = ["images/botdead0.png", "images/botdead1.png"]
+let timer: ReturnType<typeof setInterval>;
+let botTimer: ReturnType<typeof setInterval>;
+const MAX: number = 6000;  //max 1 min
+const HEADSTEP: number = 10;
+const BOTSTEP: number = 100;
+let current: number = 0;    //overall time spent in this game
+let timeStep: number = 0;   //time spent in that round (girl head turns 360 degree as 1 round)
+let playerState: boolean = true;
+let started: boolean = false;
+let noOfTurns: number = 0;
+let botRounds: number[] = [];
+let deadImg: string[] = ["images/botdead0.png", "images/botdead1.png"]
 
 let overlay = document.querySelector(".overlay");
 let playBtn = document.querySelector("#play");
@@ -18,7 +18,7 @@ let playBtn = document.querySelector("#play");
 /* GENERALIZED FUNCTIONS */
 
 //generating a bot in SVG
-function createBot(id, x, y, bothead) {
+function createBot(id: string, x: number, y: number, bothead: string): string {
     return `<image id="${id}" x="${x}" y="${y}" href="images/${bothead}.png" height="30" botstate="A"/>`;
 }
 
@@ -28,34 +28,32 @@ function stopGame() {
     timeStep = 0;
 
     clearInterval(timer);
-    timer = false;
     current = 0;
 
     clearInterval(botTimer);
-    botTimer = false;
 }
 
 //real time update the timer
 function setClock() {
-    let sec = MAX - current + 1;
+    let sec: number = MAX - current + 1;
     let clock = document.querySelector("#clock");
     clock.innerHTML = "TIME LEFT: " + sec.toString().padStart(4, "0").substring(0, 2) + ":" + sec.toString().padStart(4, "0").substring(2, 4);
-    if (sec.toString().padStart(4, "0").substring(0, 2) == 10) { clock.classList.add("redClock"); }
+    if (parseInt(sec.toString().padStart(4, "0").substring(0, 2)) == 10) { clock.classList.add("redClock"); }
 }
 
 //randomly assign the no. of turns each bot can play until dead
 function randomBotRounds() {
-    for (i = 1; i < 30; i++) {
+    for (let i: number = 1; i < 30; i++) {
         botRounds.push(Math.floor((Math.random() * 15) + 1));
     }
     //console.log("botRounds = " + botRounds);
 }
 
 //set random distance in two direction of bot movement 
-function moveBots(id, range, dir) {
+function moveBots(id: number, range: number, dir: string) {
     let bot = document.querySelector("#bot" + id);
-    let botDir = bot.getAttribute(dir);
-    bot.setAttribute(dir, botDir - range);
+    let botDir: number = parseInt(bot.getAttribute(dir));
+    bot.setAttribute(dir, String(botDir - range));
 }
 
 
@@ -69,11 +67,11 @@ function init() {
 
     //generate 30 bots in random positions in svg
     let bots = document.querySelector("#bots");
-    let botOutput = "";
-    let P = 30;
+    let botOutput: string = "";
+    const P: number = 30; //number of bots
 
     for (let i = 1; i < P; i = i + 1) {
-        botOutput += createBot("bot" + i, ((Math.random() * 20) + 1140), Math.floor((Math.random() * 550) + 1), "bothead");
+        botOutput += createBot("bot" + String(i), ((Math.random() * 20) + 1140), Math.floor((Math.random() * 550) + 1), "bothead");
     }
     bots.innerHTML = botOutput;
 
@@ -117,45 +115,44 @@ function moveHead() {
     let turnRate = Math.random() * (3 - 1) + 1;   //each turn will have different turning speed
     let pause = 360 / turnRate;     //calculate the time needed to turn 360 degree, i.e. reaching the forwarding position
     let pauseTime = 300;   //after each turn, the head will stay for 300ms
-    if (!timer) {
-        timer = setInterval(() => {
-            setClock();
-            let redGreenLine = document.querySelector("#rgline");
-            let head = document.querySelector("#head");
-            current++;
-            timeStep++;
+    timer = setInterval(() => {
+        setClock();
+        let redGreenLine = document.querySelector("#rgline");
+        let head = document.querySelector("#head");
+        current++;
+        timeStep++;
 
-            if (timeStep > pause) {             //when the time reaches the pause time (i.e. red light status), stop the head and change line to red
-                redGreenLine.setAttribute("stroke", "rgb(216, 67, 21)");
+        if (timeStep > pause) {             //when the time reaches the pause time (i.e. red light status), stop the head and change line to red
+            redGreenLine.setAttribute("stroke", "rgb(216, 67, 21)");
 
-                for (let j = 1; j < 30; j++) {  //when it is red light, some bots will die (according to their randomly assigned no. of rounds to play till dead)
-                    let bot = document.querySelector("#bot" + j);
-                    let botState = bot.getAttribute("botstate");    //botstate is to define the bot is "A"- active, or "D"- dead
-                    //let randomDeadImg = Math.random() * 2 >= 1;
-                    if (botRounds[j - 1] <= noOfTurns && bot.getAttribute("x") > 105 && botState == "A") {  //if the bot reaches the max. no. of round to play, kill the bot
-                        bot.setAttribute("botstate", "D");      //set botstate from "A"- active to "D"- dead
-                        bot.setAttribute("href", deadImg[parseInt(Math.random() * deadImg.length)])//replace bot image by dead bot image, two versions of dead images will be used randomly
-                        bot.setAttribute("height", "50");       //dead image's height is higher than normal bot image
-                    }
+            for (let j = 1; j < 30; j++) {  //when it is red light, some bots will die (according to their randomly assigned no. of rounds to play till dead)
+                let bot = document.querySelector("#bot" + j);
+                let botState = bot.getAttribute("botstate");    //botstate is to define the bot is "A"- active, or "D"- dead
+                //let randomDeadImg = Math.random() * 2 >= 1;
+                if (botRounds[j - 1] <= noOfTurns && parseInt(bot.getAttribute("x")) > 105 && botState == "A") {  //if the bot reaches the max. no. of round to play, kill the bot
+                    bot.setAttribute("botstate", "D");      //set botstate from "A"- active to "D"- dead
+                    bot.setAttribute("href", deadImg[Math.random() * deadImg.length]);//replace bot image by dead bot image, two versions of dead images will be used randomly
+                    bot.setAttribute("height", "50");       //dead image's height is higher than normal bot image
                 }
             }
-            if (timeStep >= pause + pauseTime) {    //when the head stays for 300ms already, move the head again
-                timeStep = 0;
-                turnRate = Math.random() * (3 - 1) + 1;  //randomize the turn rate again
-                pause = 360 / turnRate;     //recalculate the time needed to turn 360 degree
-                //console.log("current" + current + " timeStep" + timeStep + " pause" + pause + " pauseTime" + pauseTime);
-                noOfTurns++;
-                //console.log("noOfTurns = " + noOfTurns);
-                return;
-            }
-            if (timeStep <= pause) {        //before the time reaches the pause time, turn the girl head
-                head.setAttribute("transform", 'rotate(' + timeStep * turnRate + ' 55 62)');
-                redGreenLine.setAttribute("stroke", "green");
-            }
+        }
+        if (timeStep >= pause + pauseTime) {    //when the head stays for 300ms already, move the head again
+            timeStep = 0;
+            turnRate = Math.random() * (3 - 1) + 1;  //randomize the turn rate again
+            pause = 360 / turnRate;     //recalculate the time needed to turn 360 degree
+            //console.log("current" + current + " timeStep" + timeStep + " pause" + pause + " pauseTime" + pauseTime);
+            noOfTurns++;
+            //console.log("noOfTurns = " + noOfTurns);
+            return;
+        }
+        if (timeStep <= pause) {        //before the time reaches the pause time, turn the girl head
+            head.setAttribute("transform", 'rotate(' + timeStep * turnRate + ' 55 62)');
+            redGreenLine.setAttribute("stroke", "green");
+        }
 
-            checkWinLose();
-        }, HEADSTEP);
-    }
+        checkWinLose();
+    }, HEADSTEP);
+
 }
 
 //User click Play or Replay, start the game
@@ -166,7 +163,7 @@ function start() {
     overlay.classList.remove("displayOverlay");
 
     //bots move randomly towards head
-    if (!botTimer && playerState) {
+    if (playerState) {
         botTimer = setInterval(() => {
             let P = 30;
             for (let i = 1; i < P; i = i + 1) {
@@ -175,7 +172,7 @@ function start() {
                 let botState = bot.getAttribute("botstate");
                 let shouldRun = Math.random() >= 0.5;
                 // only move if not yet pass the line and line is green
-                if (botState == "A" && shouldRun && lineColor == "green" && bot.getAttribute("x") > 90) {
+                if (botState == "A" && shouldRun && lineColor == "green" && parseInt(bot.getAttribute("x")) > 90) {
                     moveBots(i, Math.floor((Math.random() * 13) + 1), "x");
                     moveBots(i, Math.floor(((Math.random() - 0.8) * 2) + 1), "y");
                 }
@@ -196,14 +193,14 @@ function checkWinLose() {
         gameOver("L", "TIME IS UP!");
     }
     //player passed the line
-    else if (player.getAttribute("x") < 100) {
+    else if (parseInt(player.getAttribute("x")) < 100) {
         gameOver("W", "YOU WIN!");
     }
 
     //one bot reached the goal first
-    let bots = document.querySelectorAll(`image[id^="bot"]`);
+    let bots = Array.from(document.querySelectorAll(`image[id^="bot"]`));
     for (let bot of bots) {
-        if (bot.getAttribute("x") <= 100) {
+        if (parseInt(bot.getAttribute("x")) <= 100) {
             gameOver("L", "YOU ARE TOO SLOW!");
         }
     }
@@ -213,12 +210,13 @@ function checkWinLose() {
 //User click on play area, player move and check if caught by the girl
 function processGame() {
     let player = document.querySelector("#player");
-    let x = player.getAttribute("x");
+    let x: number = parseInt(player.getAttribute("x"));
     let lineColor = document.querySelector("#rgline").getAttribute("stroke");
+    let output = document.querySelector("#output");
 
     //player move towards head per click
     if (playerState && started) {
-        player.setAttribute("x", x - 11);
+        player.setAttribute("x", String(x - 11));
     }
 
     //girl caught player
@@ -228,11 +226,11 @@ function processGame() {
 }
 
 /* INSTRUCTION TOGGLE */
-let h2Button = document.querySelector("h2");
-h2Button.addEventListener("click", openInstruction);
+let h2Btn = document.querySelector("h2");
+h2Btn.addEventListener("click", openInstruction);
 
-let close = document.querySelector("#close");
-close.addEventListener("click", closeInstruction);
+let closeBtn = document.querySelector("#close");
+closeBtn.addEventListener("click", closeInstruction);
 
 //open instruction modal only when the overlay is present
 function openInstruction() {
