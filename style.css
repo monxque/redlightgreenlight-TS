@@ -1,0 +1,280 @@
+@import url('https://fonts.googleapis.com/css2?family=Amatic+SC:wght@400;700&family=Outfit:wght@100;300;400;600;700&family=VT323&display=swap');
+
+:root {
+    --red-color: rgba(255, 0, 0, 1);
+    --green-color: rgb(11, 180, 11);
+    --orange-color: rgb(255, 178, 61);
+}
+
+body {
+    font-family: VT323, Helvetica, sans-serif;
+    font-weight: 300;
+    font-size: 1.5rem;
+    background-image: url("images/bg.png");
+    background-repeat: repeat;
+    background-attachment: fixed;
+    background-color: slategray;
+    margin: 0;
+}
+
+section {
+    background-color: rgba(255,255,255,0);
+    max-width: 1400px;
+    margin: auto;
+    margin-top: 0;
+    margin-bottom: 0;
+    padding: .3rem 0 2rem 0;
+}
+
+h1 {
+   text-align: center;
+   height: 20vh;
+   box-sizing: border-box;
+   /*font-family: 'Amatic SC';
+   font-size: 4rem;*/
+}
+
+h1 img {
+    height: 100%;
+}
+
+h2 {
+    background-color: rgb(255, 230, 0);
+    font-size: x-large;
+    width: fit-content;
+    height: fit-content;
+    padding: 0.8rem;
+    text-align: center;
+    color: black;
+    margin: 0 0 1rem 0;
+    border-radius: 5px;
+}
+
+h3 {
+    text-transform: uppercase;
+    font-weight: 500;
+    text-shadow: 2px 2px 0px black, -1px 1px 0px black, 1px -1px 0px black, -1px -1px 0px black;
+    color: white;
+    font-size: xx-large;
+}
+
+.red{
+    color: var(--red-color);
+    stroke: var(--green-color);
+}
+
+.green {
+    color: var(--green-color);
+    stroke: var(--green-color);
+}
+
+h1+div {
+    text-align: center; font-size:x-large;
+}
+
+.instruction {
+    text-align: center; 
+    background-color: rgb(233, 233, 233);
+    width: fit-content;
+    padding: 1rem 2rem;
+    margin: auto;
+    margin-top: 2rem;
+    margin-bottom: 3rem;
+    border: 5px solid white;
+    position: relative;
+    display: none;
+}
+
+.instruction::after {
+    content: ' ';
+    position: absolute;
+    z-index: -1;
+    top: -15px;
+    left: -15px;
+    right: -15px;
+    bottom: -15px;
+    border: 15px solid rgb(233, 233, 233);
+}
+
+.displayInstruction {
+    display: block;
+}
+
+#close {
+    position: absolute;
+    right: 1rem;
+    top: 1rem;
+    border: none;
+    background-color: white;
+    border-radius: 2px;
+    cursor: pointer;
+    font-size: x-large;
+} 
+
+#clock {
+    text-align: center; font-size:3rem;
+    margin-bottom: 1rem;
+    padding: 1rem;
+    color: white;
+    text-shadow: 3px 3px 0px black, -1px 1px 0px black, 1px -1px 0px black, -1px -1px 0px black;
+}
+
+.redClock {
+    color: var(--red-color);
+}
+
+div {
+    text-align: center; 
+}
+
+svg {
+    background-image: linear-gradient(to bottom right, rgb(250, 242, 218),rgb(250, 228, 164));
+}
+
+#output {
+    text-align: center;
+}
+
+.gameArea {
+    user-select: none; /* supported by Chrome and Opera */
+   -webkit-user-select: none; /* Safari */
+   -khtml-user-select: none; /* Konqueror HTML */
+   -moz-user-select: none; /* Firefox */
+   -ms-user-select: none; /* Internet Explorer/Edge */
+   position: relative;
+   width: fit-content;
+   margin: auto;
+}
+
+.overlay {
+    width: 1200px;
+    height: 600px;
+    background-color: rgba(25,25,0,0.6);
+    position: absolute;
+    top: 0;
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.displayOverlay {
+    display: flex;
+}
+
+#output + div {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+#reset {
+    position: absolute;
+    right: 20px;
+    top: 20px;
+    background-color: var(--orange-color);
+    opacity: .6;
+    font-size: medium;
+    padding: .8rem;
+    border-radius: 5rem;
+    border: 0;
+    color: white;
+    transition: all .5s;
+    font-family: VT323, Helvetica, sans-serif;
+}
+
+#reset:hover {
+    box-shadow: 0 .5rem 0 rgba(85, 52, 15, 0.6);
+    opacity: .9;
+    cursor: pointer;
+}
+
+#play{
+    /* border: 2px dashed white; */
+    border: 0;
+    border-radius: 5rem;
+    background-image: linear-gradient(to bottom, var(--orange-color), var(--orange-color));
+    padding: 1rem;
+    transition: all .5s;
+    margin: 2rem;
+    color: white;
+    height: fit-content;
+    font-family: VT323;
+    font-size: x-large;
+} 
+
+#play i {
+    font-size: large;
+}
+
+#play:hover{
+    box-shadow: 0 .5rem 0 rgba(85, 52, 15, 0.6);
+    background-image:   linear-gradient(to bottom, transparent 0% 30%, var(--orange-color)30% 100%), 
+    linear-gradient(to right, rgb(255, 217, 49) 0% 20%, var(--orange-color) 20% 30%, rgb(255, 217, 49) 30% 70%, var(--orange-color) 70% 80%, rgb(255, 217, 49) 80% 100%);   
+    cursor: pointer;
+    font-family: VT323;
+}
+
+.red {
+    background-color:  var(--red-color);
+}
+
+.win {
+    font-size: 3rem; 
+    color:white; 
+    text-shadow: 0 2px 0 black;
+    text-align: center; 
+}
+
+.lose {
+    font-size: 3rem; 
+    color: white; 
+    text-shadow: 0 2px 0 black;
+    text-align: center; 
+}
+
+.gameover {
+    font-size: 4rem; 
+    color: var(--red-color); 
+    text-shadow: 2px 2px 0 white, -2px -2px 0 yellow, 2px -2px 0 white, -2px 2px 0 yellow;
+}
+
+.congrats {
+    font-size: 4rem; 
+    color:rgb(255, 123, 0); 
+    text-shadow: 2px 2px 0 white, -2px -2px 0 yellow, 2px -2px 0 white, -2px 2px 0 yellow;
+}
+
+.hide {
+    display: none;
+}
+
+section>div:first-of-type {
+    display: grid;
+    grid-template-columns: 1fr 2fr 1fr;
+    max-width: 1200px;
+    margin: auto;
+}
+
+#clock {
+    grid-column: 2 /3;
+}
+
+h2 {
+    grid-column: 3/4;
+    justify-self: end;
+    align-self: center;
+    transition: all .5s;
+}
+
+h2:hover {
+    box-shadow: 0 .5rem 0 rgba(85, 52, 15, 0.6);
+    cursor: pointer;
+}
+
+footer {
+    text-align: center;
+    font-size: 1rem;
+    margin-bottom: 2rem;
+}
