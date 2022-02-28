@@ -101,7 +101,7 @@ function moveHead() {
                 //let randomDeadImg = Math.random() * 2 >= 1;
                 if (botRounds[j - 1] <= noOfTurns && parseInt(bot.getAttribute("x")) > 105 && botState == "A") { //if the bot reaches the max. no. of round to play, kill the bot
                     bot.setAttribute("botstate", "D"); //set botstate from "A"- active to "D"- dead
-                    bot.setAttribute("href", deadImg[Math.random() * deadImg.length]); //replace bot image by dead bot image, two versions of dead images will be used randomly
+                    bot.setAttribute("href", deadImg[Math.trunc(Math.random() * deadImg.length)]); //replace bot image by dead bot image, two versions of dead images will be used randomly
                     bot.setAttribute("height", "50"); //dead image's height is higher than normal bot image
                 }
             }
