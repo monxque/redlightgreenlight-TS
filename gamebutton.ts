@@ -37,7 +37,7 @@ function gameOver(result, reason) {
         document.querySelector("#player").setAttribute("href", "images/456dead.png");
         document.querySelector("#player").setAttribute("height", "60");
     } else {
-        '<div id="output"><span class="congrats">CONGRATULATIONS!</span> <br><br> <span class="win">YOU WIN!<span></div>'
+        output.outerHTML ='<div id="output"><span class="congrats">CONGRATULATIONS!</span> <br><br> <span class="win">YOU WIN!<span></div>';
     }
     stopGame();
 }
